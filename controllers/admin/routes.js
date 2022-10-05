@@ -12,7 +12,7 @@ const saveRoute = async(req,res)=>{
 }
 const getAllRoutes = async (req, res) => {
     const from = req.query.from ? { from: req.query.from} : {}
-    const routes = await Route.find(from).sort({to:"asc"})
+    const routes = await Route.find(from).sort({from:"asc"})
     res.status(200).json({ routes })
 
 }
