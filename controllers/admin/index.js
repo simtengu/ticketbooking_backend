@@ -13,7 +13,7 @@ const Bus = require("../../models/bus")
 
 const fetchDashboardDetails = async (req, res) => {
 
-//today's booked tickets section..............................
+    //today's booked tickets section..............................
     let filterOptions = {}
     let todayStr;
     let theNextDayString;
@@ -44,10 +44,10 @@ const fetchDashboardDetails = async (req, res) => {
     theNextDayString = `${theNextDayYear}-${theNextDayMonth}-${theNextDate}`
     //adding createdAt field to filter options...............
     filterOptions.createdAt = { $gte: todayStr, $lt: theNextDayString }
-//end of today's booked tickets section..............................
+    //end of today's booked tickets section..............................
 
 
-    const rs = await Promise.all([User.find({}).countDocuments(), Message.find({}).countDocuments(), Region.find({}).countDocuments(), Ticket.find({}).countDocuments(), Bus.find({}).countDocuments(),  Ticket.find(filterOptions).sort("-createdAt")])
+    const rs = await Promise.all([User.find({}).countDocuments(), Message.find({}).countDocuments(), Region.find({}).countDocuments(), Ticket.find({}).countDocuments(), Bus.find({}).countDocuments(), Ticket.find(filterOptions).sort("-createdAt")])
     const agg = await Ticket.aggregate([{ $match: { price: { $gte: 1 } } }, {
         $group: {
             _id: null, total: {
@@ -55,13 +55,15 @@ const fetchDashboardDetails = async (req, res) => {
             }
         }
     }])
+
+    console.log('total', agg.length)
     const users = rs[0]
     const messages = rs[1]
     const regions = rs[2]
     const tickets = rs[3]
     const buses = rs[4]
     const todayTickets = rs[5]
-    const income = agg[0].total
+    const income = agg.length > 0 ?   agg[0].total : 0
     res.status(200).json({ users, tickets, messages, regions, buses, income, todayTickets })
 }
 
