@@ -6,7 +6,6 @@ const roles = {
 
 const allowedOrigins = [
     "http://127.0.0.1:3000",
-    "http://localhost:5000",
     "https://simtenguticketbooking.netlify.app",
     "http://localhost:3000"
 ]

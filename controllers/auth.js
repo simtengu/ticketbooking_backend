@@ -3,6 +3,7 @@ const { BadRequestError, NotFoundError } = require('../errors')
 const jwt = require("jsonwebtoken")
 const bycript = require("bcryptjs")
 const User = require("../models/user")
+const environment = process.env.NODE_ENV;
 
 const register = async (req, res) => {
     const user = await User.create(req.body);
@@ -10,7 +11,7 @@ const register = async (req, res) => {
     let oneDay = 1000 * 60 * 60 * 24;
 
     res.cookie("authUser", user.firstName, { maxAge: oneDay })
-    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: false })
+    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: environment ? true : false })
     res.status(201).json({ message: 'user registered', user, token })
 
 }
@@ -29,7 +30,7 @@ const login = async (req, res) => {
     let oneDay = 1000 * 60 * 60 * 24;
 
     res.cookie("authUser", user.firstName, { maxAge: oneDay })
-    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: false})
+    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: environment ? true : false })
     // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: false })
     res.status(200).json({ user, token })
 }
@@ -37,8 +38,8 @@ const login = async (req, res) => {
 const logout = (req, res) => {
     let oneSecond = 1000;
     //updating a valid token to invalid one..(short lived)
-    res.cookie("jwt", "nothing", { maxAge: oneSecond, httpOnly: true,secure:false })
-    res.status(200).json({message:"logged out successfully" })
+    res.cookie("jwt", "nothing", { maxAge: oneSecond, httpOnly: true, secure: false })
+    res.status(200).json({ message: "logged out successfully" })
 
 }
 
@@ -48,4 +49,4 @@ const getAuthUser = async (req, res) => {
     res.status(200).json({ user })
 }
 
-module.exports = { register, login,logout, getAuthUser }
+module.exports = { register, login, logout, getAuthUser }

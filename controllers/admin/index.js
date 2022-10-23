@@ -56,7 +56,7 @@ const fetchDashboardDetails = async (req, res) => {
         }
     }])
 
-    console.log('total', agg.length)
+   
     const users = rs[0]
     const messages = rs[1]
     const regions = rs[2]
