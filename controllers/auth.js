@@ -1,7 +1,5 @@
 
-const { BadRequestError, NotFoundError } = require('../errors')
-const jwt = require("jsonwebtoken")
-const bycript = require("bcryptjs")
+const { BadRequestError } = require('../errors')
 const User = require("../models/user")
 const environment = process.env.NODE_ENV;
 
@@ -18,7 +16,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-
     if (!email || !password) throw new BadRequestError('Please provide both email and password')
     const user = await User.findOne({ email }).populate("tickets")
     if (!user) throw new BadRequestError("Credentials passed are not valid")
@@ -30,7 +27,7 @@ const login = async (req, res) => {
     let oneDay = 1000 * 60 * 60 * 24;
 
     res.cookie("authUser", user.firstName, { maxAge: oneDay })
-    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: environment ? true : false })
+    res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
     // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: false })
     res.status(200).json({ user, token })
 }
@@ -50,3 +47,16 @@ const getAuthUser = async (req, res) => {
 }
 
 module.exports = { register, login, logout, getAuthUser }
+
+
+
+
+
+// app.use(session({
+//     .......
+//    .......
+//         cookie:{
+//     maxAge: 24 * 60 * 60 * 1000, //please change it based on your needs
+//     secure: app.get('env') === 'production' ? true : false,
+//     sameSite: 'none'
+// }}));
