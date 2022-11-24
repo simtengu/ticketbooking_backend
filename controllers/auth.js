@@ -22,20 +22,20 @@ const login = async (req, res) => {
     //compare password of a user............ 
     const isMatch = await user.comparePassword(password)
     if (!isMatch) throw new BadRequestError(" Wrong email or password")
-    //everything is ok provide a token ..................
+    //everything is ok provide a token ..................,,,,
     const token = user.createJWT();
     let oneDay = 1000 * 60 * 60 * 24;
 
-    res.cookie("authUser", user.firstName, { maxAge: oneDay })
+    // res.cookie("authUser", user.firstName, { maxAge: oneDay })
     res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
-    // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: false })
+    // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
     res.status(200).json({ user, token })
 }
 
 const logout = (req, res) => {
     let oneSecond = 1000;
     //updating a valid token to invalid one..(short lived)
-    res.cookie("jwt", "nothing", { maxAge: oneSecond, httpOnly: true, secure: false })
+    res.cookie("jwt", "", { maxAge: oneSecond, sameSite: "none", httpOnly: true, secure: environment ? true : false })
     res.status(200).json({ message: "logged out successfully" })
 
 }
