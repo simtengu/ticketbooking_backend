@@ -27,16 +27,26 @@ const login = async (req, res) => {
   let oneDay = 1000 * 60 * 60 * 24;
 
   // res.cookie("authUser", user.firstName, { maxAge: oneDay })
-  res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true });
-  // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
+  //   res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true });
+  //   res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
+  res.cookie("jwt", token, {
+    maxAge: oneDay,
+    sameSite: "none",
+    httpOnly: true,
+    secure: true,
+  });
   res.status(200).json({ user, token });
 };
 
 const logout = (req, res) => {
   let oneSecond = 1000;
   //updating a valid token to invalid one..(short lived)
-  // res.cookie("jwt", "", { maxAge: oneSecond, sameSite: "none", httpOnly: true, secure: environment ? true : false })
-  res.cookie("jwt", "", { maxAge: oneSecond, httpOnly: true });
+  res.cookie("jwt", "", {
+    maxAge: oneSecond,
+    sameSite: "none",
+    httpOnly: true,
+    secure: true,
+  });
   res.status(200).json({ message: "logged out successfully" });
 };
 

@@ -18,6 +18,7 @@ const corsOptions = {
       callback(new Error("not allowed origin"));
     }
   },
+  credentials: true,
   optionsSuccessStatus: 200,
 };
 
