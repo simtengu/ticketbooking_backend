@@ -4,12 +4,6 @@ const Route = require("../models/route");
 const Message = require("../models/message");
 // const pdf = require("html-pdf");
 var fs = require("fs");
-var ticketTemplate = fs.readFileSync(
-  `${__dirname}/../documents/ticketTemplate.html`,
-  "utf8"
-);
-var options = { format: "Letter" };
-const path = require("path");
 
 // const ticketTemplate = require("../documents/ticketTemplate")
 const { NotFoundError, BadRequestError } = require("../errors");

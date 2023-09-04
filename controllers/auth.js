@@ -9,7 +9,8 @@ const register = async (req, res) => {
     let oneDay = 1000 * 60 * 60 * 24;
 
     res.cookie("authUser", user.firstName, { maxAge: oneDay })
-    res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: environment ? true : false })
+    res.cookie("jwt", token, { maxAge: oneDay,httpOnly: true,  })
+    // res.cookie("jwt", token, { maxAge: oneDay, httpOnly: true, secure: environment ? true : false })
     res.status(201).json({ message: 'user registered', user, token })
 
 }
@@ -27,7 +28,7 @@ const login = async (req, res) => {
     let oneDay = 1000 * 60 * 60 * 24;
 
     // res.cookie("authUser", user.firstName, { maxAge: oneDay })
-    res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
+    res.cookie("jwt", token, { maxAge: oneDay,httpOnly: true,  })
     // res.cookie("jwt", token, { maxAge: oneDay, sameSite: "none", httpOnly: true, secure: environment ? true : false })
     res.status(200).json({ user, token })
 }
